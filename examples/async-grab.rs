@@ -4,14 +4,11 @@ const COUNT_IMAGES_TO_GRAB: u32 = 100;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    // Before using any pylon methods, the pylon runtime must be initialized.
-    let pylon = pylon_cxx::Pylon::new();
-
     // Create an instant camera object with the camera device found first.
-    let mut camera = pylon_cxx::TlFactory::instance(&pylon).create_first_device()?;
+    let mut camera = pylon_shimload::create_first_device()?;
 
     // Print the model name of the camera.
-    println!("Using device {:?}", camera.device_info().model_name()?);
+    println!("Using device {:?}", camera.device_info()?.model_name()?);
 
     camera.open()?;
 
@@ -20,7 +17,7 @@ async fn main() -> anyhow::Result<()> {
     // Start the grabbing of COUNT_IMAGES_TO_GRAB images.
     // The camera device is parameterized with a default configuration which
     // sets up free-running continuous acquisition.
-    camera.start_grabbing(&pylon_cxx::GrabOptions::default().count(COUNT_IMAGES_TO_GRAB))?;
+    camera.start_grabbing(&pylon_shimload::GrabOptions::default().count(COUNT_IMAGES_TO_GRAB))?;
 
     match camera.node_map()?.enum_node("PixelFormat") {
         Ok(node) => println!(

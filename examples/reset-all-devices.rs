@@ -1,18 +1,14 @@
-use pylon_cxx::HasProperties;
+use pylon_shimload::HasProperties;
 
 fn main() -> anyhow::Result<()> {
-    // Before using any pylon methods, the pylon runtime must be initialized.
-    let pylon = pylon_cxx::Pylon::new();
-
-    let tl_factory = pylon_cxx::TlFactory::instance(&pylon);
-    for device in tl_factory.enumerate_devices()? {
+    for device in pylon_shimload::enumerate_devices()? {
         println!(
             "Device {} {} -------------",
             device.property_value("VendorName")?,
             device.property_value("SerialNumber")?
         );
 
-        let camera = tl_factory.create_device(&device)?;
+        let camera = pylon_shimload::create_device(&device)?;
         camera.open()?;
 
         {

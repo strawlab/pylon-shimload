@@ -1,12 +1,9 @@
 fn main() -> anyhow::Result<()> {
-    // Before using any pylon methods, the pylon runtime must be initialized.
-    let pylon = pylon_cxx::Pylon::new();
-
     // Create an instant camera object with the camera device found first.
-    let camera = pylon_cxx::TlFactory::instance(&pylon).create_first_device()?;
+    let camera = pylon_shimload::create_first_device()?;
 
     // Print the model name of the camera.
-    println!("Using device {}.", camera.device_info().model_name()?);
+    println!("Using device {}.", camera.device_info()?.model_name()?);
 
     camera.open()?;
 

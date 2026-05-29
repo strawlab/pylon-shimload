@@ -1,12 +1,13 @@
 #![cfg(feature = "stream")]
-use pylon_cxx::{GrabOptions, Pylon, PylonError, PylonResult, TlFactory};
+use pylon_shimload::{
+    create_device, create_first_device, enumerate_devices, GrabOptions, PylonError, PylonResult,
+};
 use tokio_stream::{StreamExt, StreamMap};
 
 #[tokio::test]
 async fn streaming_works() -> PylonResult<()> {
     let mut images = 10;
-    let pylon = Pylon::new();
-    let mut cam = TlFactory::instance(&pylon).create_first_device()?;
+    let mut cam = create_first_device()?;
     cam.open()?;
     cam.start_grabbing(&GrabOptions::default().count(images))?;
     while let Some(res) = cam.next().await {
@@ -19,14 +20,12 @@ async fn streaming_works() -> PylonResult<()> {
 
 #[tokio::test]
 async fn streaming_all_cams_works() -> PylonResult<()> {
-    let pylon = Pylon::new();
     let mut streams = StreamMap::new();
-    TlFactory::instance(&pylon)
-        .enumerate_devices()?
+    enumerate_devices()?
         .iter()
         .enumerate()
         .try_for_each(|(n, info)| {
-            let cam = TlFactory::instance(&pylon).create_device(info)?;
+            let cam = create_device(info)?;
             cam.open()?;
             cam.start_grabbing(&GrabOptions::default())?;
             streams.insert(format!("{}-{}", info.model_name()?, n), Box::pin(cam));
@@ -44,8 +43,7 @@ async fn streaming_all_cams_works() -> PylonResult<()> {
 
 #[tokio::test]
 async fn start_stop_loop_works() -> PylonResult<()> {
-    let pylon = Pylon::new();
-    let mut cam = TlFactory::instance(&pylon).create_first_device()?;
+    let mut cam = create_first_device()?;
     cam.open()?;
     for _ in 0..5 {
         let mut images = 10;

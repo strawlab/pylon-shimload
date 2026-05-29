@@ -1,4 +1,5 @@
-fn main() {
+fn main() -> anyhow::Result<()> {
     println!("{}: {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
-    println!("{:?}", pylon_cxx::pylon_version());
+    println!("{:?}", pylon_shimload::version()?);
+    Ok(())
 }

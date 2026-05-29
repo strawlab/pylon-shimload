@@ -1,0 +1,8 @@
+# Keep the build context small for `docker buildx build .`
+target/
+.git/
+examples/
+tests/
+scratch/
+*.md
+pylon-cabi/out/
