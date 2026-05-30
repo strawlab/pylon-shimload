@@ -189,9 +189,10 @@ fn init_shim_result() -> Result<Shim, PylonError> {
     let path = match std::env::var_os("PYLON_CABI") {
         Some(val) => val,
         None => {
-            // libloading::Library::new will look in system library paths if no
-            // path is provided.
-            std::ffi::OsString::from("pylon-cabi")
+            // Use platform-specific default prefix and suffix (e.g.
+            // `libpylon-cabi.so` on linux, `libpylon-cabi.dylib`, and
+            // 'pylon-cabi.dll` on windows ).
+            libloading::library_filename("pylon-cabi")
         }
     };
     let path_ref = path.as_os_str();

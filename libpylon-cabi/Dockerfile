@@ -1,16 +1,16 @@
 # syntax=docker/dockerfile:1.7
 #
-# Reproducible build of pylon-cabi.so for linux-x86_64.
+# Reproducible build of libpylon-cabi.so for linux-x86_64.
 #
 # The Basler pylon SDK is installed from a pinned .deb.
 #
 # Build (run from the repo root):
 #   docker buildx build \
-#       --file pylon-cabi/Dockerfile \
-#       --output type=local,dest=pylon-cabi/out \
+#       --file libpylon-cabi/Dockerfile \
+#       --output type=local,dest=libpylon-cabi/out \
 #       .
 #
-# Result: pylon-cabi/out/pylon-cabi.so
+# Result: libpylon-cabi/out/libpylon-cabi.so
 #
 # Reproducibility: same Dockerfile + same PYLON_DEB_URL/SHA256 + same Debian
 # base tag => same .so.
@@ -44,16 +44,16 @@ RUN curl --show-error --fail --silent "${PYLON_DEB_URL}" -o /tmp/pylon.deb \
     && test -d /opt/pylon/include/pylon
 
 # Stage shim sources.
-COPY pylon-cabi/include/pylon-cabi.h /work/include/pylon-cabi.h
-COPY pylon-cabi/src/pylon-cabi.cc /work/src/pylon-cabi.cc
-COPY pylon-cabi/Makefile /work/Makefile
+COPY libpylon-cabi/include/libpylon-cabi.h /work/include/libpylon-cabi.h
+COPY libpylon-cabi/src/libpylon-cabi.cc /work/src/libpylon-cabi.cc
+COPY libpylon-cabi/Makefile /work/Makefile
 
 WORKDIR /work
 RUN make PYLON_ROOT=/opt/pylon \
-    && test -f pylon-cabi.so \
-    && ldd pylon-cabi.so
+    && test -f libpylon-cabi.so \
+    && ldd libpylon-cabi.so
 
 # Export stage: emits only the .so so `docker buildx build --output` writes
 # a single file to the host without docker cp or a running container.
 FROM scratch AS export
-COPY --from=builder /work/pylon-cabi.so /
+COPY --from=builder /work/libpylon-cabi.so /

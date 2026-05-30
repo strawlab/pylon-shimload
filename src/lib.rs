@@ -135,10 +135,10 @@ impl std::fmt::Display for PylonError {
             }
             PylonError::DlOpenFailed { path,  source } => write!(
                 f,
-                "There was a problem opening the `pylon-cabi` shim library. The path was specified \
+                "There was a problem opening the `libpylon-cabi` shim library. The path was specified \
                 as {path:?}. You can force a specific path \
                 to the shim library using the `PYLON_CABI` environment variable. Shim libraries can \
-                be downloaded from https://strawlab.org/assets/pylon-cabi/precompiled/ or built \
+                be downloaded from https://strawlab.org/assets/libpylon-cabi/precompiled/ or built \
                 from source. You need v{EXPECTED_CABI_VERSION} of the shim library for this version of `pylon-shimload`.\
                 \n\nThe source of the error was:\n\n\
                 {source}"

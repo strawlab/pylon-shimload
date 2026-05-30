@@ -20,7 +20,7 @@
 #include <sstream>
 
 #include "pylon/PylonIncludes.h"
-#include "pylon-cabi.h"
+#include "libpylon-cabi.h"
 
 /* -------------------------------------------------------------------------
  * Internal helpers

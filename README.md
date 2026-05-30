@@ -65,29 +65,29 @@ cargo run --example async-grab --features stream,tokio/rt-multi-thread
 ## Downloading a shim
 
 Shims for different platforms and Pylon versions can be found at
-https://strawlab.org/assets/pylon-cabi/precompiled/.
+https://strawlab.org/assets/libpylon-cabi/precompiled/.
 
 ### Linux (x86_64)
 
 ```bash
-SHIM_FILENAME="pylon-cabi-v1-linux-x86_64-pylon_7.3.0.27189.so"
-SHIM_URL="https://strawlab.org/assets/pylon-cabi/precompiled/${SHIM_FILENAME}"
-curl --fail -L -o pylon-cabi.so "${SHIM_URL}"
-export "PYLON_CABI=$(pwd)/pylon-cabi.so"
+SHIM_FILENAME="libpylon-cabi-v1-linux-x86_64-pylon_7.3.0.27189.so"
+SHIM_URL="https://strawlab.org/assets/libpylon-cabi/precompiled/${SHIM_FILENAME}"
+curl --fail -L -o libpylon-cabi.so "${SHIM_URL}"
+export "PYLON_CABI=$(pwd)/libpylon-cabi.so"
 ```
 
 ### macOS (aarch64)
 
 ```bash
-SHIM_FILENAME="pylon-cabi-v1-macos-aarch64-pylon_7.3.1.9.dylib"
-SHIM_URL="https://strawlab.org/assets/pylon-cabi/precompiled/${SHIM_FILENAME}"
-curl --fail -L -o pylon-cabi.dylib "${SHIM_URL}"
-export "PYLON_CABI=$(pwd)/pylon-cabi.dylib"
+SHIM_FILENAME="libpylon-cabi-v1-macos-aarch64-pylon_7.3.1.9.dylib"
+SHIM_URL="https://strawlab.org/assets/libpylon-cabi/precompiled/${SHIM_FILENAME}"
+curl --fail -L -o libpylon-cabi.dylib "${SHIM_URL}"
+export "PYLON_CABI=$(pwd)/libpylon-cabi.dylib"
 ```
 
 ## Compiling a shim
 
-The source code for the C ABI shim library is in the `pylon-cabi` directory. It
+The source code for the C ABI shim library is in the `libpylon-cabi` directory. It
 can be built independently of this Rust crate, and the resulting shared library
 can be used with this crate.
 
@@ -100,19 +100,19 @@ build paths are:
 Build the shim with:
 
 ```bash
-make -C pylon-cabi
+make -C libpylon-cabi
 ```
 
 You can override the Linux SDK location, for example:
 
 ```bash
-make -C pylon-cabi PYLON_ROOT=/opt/pylon
+make -C libpylon-cabi PYLON_ROOT=/opt/pylon
 ```
 
 ### Reproducible build of the shim
 
 Reproducible Linux builds of the shim can be done with Docker. See
-`pylon-cabi/Dockerfile` for details.
+`libpylon-cabi/Dockerfile` for details.
 
 ## Running
 

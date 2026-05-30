@@ -1,4 +1,4 @@
-# Builds pylon-cabi.so/.dylib locally (requires the pylon SDK).
+# Builds libpylon-cabi.so/.dylib locally (requires the pylon SDK).
 #
 # Usage:
 #   make                         # build the shim
@@ -6,8 +6,8 @@
 #   make clean                   # remove build artefacts
 #
 # After building, tell cargo where to find the shim:
-#   export PYLON_CABI=$(pwd)/pylon-cabi.so   # Linux
-#   export PYLON_CABI=$(pwd)/pylon-cabi.dylib # macOS
+#   export PYLON_CABI=$(pwd)/libpylon-cabi.so   # Linux
+#   export PYLON_CABI=$(pwd)/libpylon-cabi.dylib # macOS
 #   cargo build
 
 UNAME_S := $(shell uname -s)
@@ -15,8 +15,8 @@ UNAME_S := $(shell uname -s)
 CXX    ?= g++
 CXXSTD ?= -std=c++14
 
-SRC := src/pylon-cabi.cc
-HDR := include/pylon-cabi.h
+SRC := src/libpylon-cabi.cc
+HDR := include/libpylon-cabi.h
 
 ifeq ($(UNAME_S),Darwin)
   PYLON_FW    ?= /Library/Frameworks/pylon.framework
@@ -41,7 +41,7 @@ ifeq ($(UNAME_S),Darwin)
               -lGCBase_gcc_v3_1_Basler_pylon \
               -lGenApi_gcc_v3_1_Basler_pylon
 
-  OUT := pylon-cabi.dylib
+  OUT := libpylon-cabi.dylib
 else
   PYLON_ROOT  ?= /opt/pylon
   PYLON_INC   := $(PYLON_ROOT)/include
@@ -57,7 +57,7 @@ else
               -lpylonbase \
               -lpylonutility
 
-  OUT := pylon-cabi.so
+  OUT := libpylon-cabi.so
 endif
 
 .PHONY: all clean
@@ -71,4 +71,4 @@ $(OUT): $(SRC) $(HDR)
 	@echo "  export PYLON_CABI=\$$(pwd)/$(OUT)"
 
 clean:
-	rm -f pylon-cabi.dylib pylon-cabi.so
+	rm -f libpylon-cabi.dylib libpylon-cabi.so

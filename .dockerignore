@@ -5,4 +5,4 @@ examples/
 tests/
 scratch/
 *.md
-pylon-cabi/out/
+libpylon-cabi/out/
